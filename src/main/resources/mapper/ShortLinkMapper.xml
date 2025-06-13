@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.roy.shortlink.mapper.ShortLinkMapper">
+
+    <insert id="insert" parameterType="com.roy.shortlink.pojo.ShortLink">
+        INSERT INTO short_link (short_code, original_url, user_token, create_time, update_time, is_deleted)
+        VALUES (#{shortCode}, #{originalUrl}, #{userToken}, #{createTime}, #{updateTime}, #{isDeleted})
+    </insert>
+
+    <select id="selectByShortCode" parameterType="string" resultType="com.roy.shortlink.pojo.ShortLink">
+        SELECT * FROM short_link
+        WHERE short_code = #{shortCode} AND is_deleted = 0
+            LIMIT 1
+    </select>
+
+    <update id="deleteByShortCodeAndToken">
+        UPDATE short_link
+        SET is_deleted = 1
+        WHERE short_code = #{shortCode} AND user_token = #{userToken}
+    </update>
+
+    <select id="selectByUserToken" parameterType="string" resultType="com.roy.shortlink.pojo.ShortLink">
+        SELECT * FROM short_link
+        WHERE user_token = #{userToken} AND is_deleted = 0
+    </select>
+</mapper>
